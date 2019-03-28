@@ -18,12 +18,16 @@ df = df[df['date'] == max(df['date'])].iloc[0,0]
 ## II.- LOADING FRAME AND MERGING WITH DATE CATALOGUE
 df_dates = pd.read_excel('//NVO01WINAP0023A/Procesos Sense/Catalogos/Catalog Fecha.xlsx')
 df_dates = df_dates[['Fecha','Semana_Myn','Año_Semana']]
-df_dates['Fecha'] = [d.strftime('%Y/%m/%d') for d in df_dates['Fecha']]
 df_dates.rename(columns = {'Fecha':'Fecha finiquito estadística'}, inplace = True)
 
 df = pd.read_csv(path+df)
+date = 'Fecha finiquito estadística'
+df[date] = pd.to_datetime(df[date],format='%d/%m/%Y')
 print(df.shape)
 df = df.merge(df_dates, how = 'left', on = ['Fecha finiquito estadística'])
 print(df.shape)
 print(df.head())
 
+### III.- GROUPED FRAME
+
+df.to_excel('prueba.xlsx',index = False)
