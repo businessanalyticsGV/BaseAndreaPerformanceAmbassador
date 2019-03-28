@@ -24,7 +24,8 @@ df['Fecha'] = pd.to_datetime(df['Fecha'], format = '%d/%m/%Y')
 
 ### FECHA
 df_dates = pd.read_excel('//NVO01WINAP0023A/Procesos Sense/Catalogos/Catalog Fecha.xlsx')
-df_dates = df_dates[['Fecha','Semana_Myn','Año_Semana','Año_Myn']]
+df_dates = df_dates[['Fecha','Semana_Myn','Año-Sem Mayan','Año_Myn']]
+df_dates.rename(columns = {'Año-Sem Mayan':'Año_Semana'}, inplace = True)
 
 print(df.shape)
 df = df.merge(df_dates, how = 'left', on = ['Fecha'])

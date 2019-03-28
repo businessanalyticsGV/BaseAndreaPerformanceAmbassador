@@ -20,7 +20,8 @@ df = df[df['date'] == max(df['date'])].iloc[0,0]
 
 ## II.- LOADING FRAME AND MERGING WITH DATE CATALOGUE
 df_dates = pd.read_excel('//NVO01WINAP0023A/Procesos Sense/Catalogos/Catalog Fecha.xlsx')
-df_dates = df_dates[['Fecha','Semana_Myn','Año_Semana','Año_Myn']]
+df_dates = df_dates[['Fecha','Semana_Myn','Año-Sem Mayan','Año_Myn']]
+df_dates.rename(columns = {'Año-Sem Mayan':'Año_Semana'}, inplace = True)
 df_dates.rename(columns = {'Fecha':'Fecha finiquito estadística'}, inplace = True)
 
 df = pd.read_csv(path+df)
