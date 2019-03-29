@@ -18,10 +18,15 @@ df = df[df['true'] == False]
 df['date'] = [datetime.datetime(int(d[0]),int(d[1]),int(d[2])) for d in df['date']]
 df = df[df['date'] == max(df['date'])].iloc[0,0]
 
+print(df)
 ## II.- LOADING FRAME AND MERGING WITH DATE CATALOGUE
 df_dates = pd.read_excel('//NVO01WINAP0023A/Procesos Sense/Catalogos/Catalog Fecha.xlsx')
 df_dates = df_dates[['Fecha','Semana_Myn','Año-Sem Mayan','Año_Myn']]
 df_dates.rename(columns = {'Año-Sem Mayan':'Año_Semana'}, inplace = True)
+df_dates['Año_Semana'] = [str(year) + ' - ' + str(week) if int(week) >9 else\
+                          str(year) + ' - 0' + str(week) \
+                          for year,week in zip(df_dates['Año_Myn'],df_dates['Semana_Myn'])]
+
 df_dates.rename(columns = {'Fecha':'Fecha finiquito estadística'}, inplace = True)
 
 df = pd.read_csv(path+df)

@@ -26,6 +26,9 @@ df['Fecha'] = pd.to_datetime(df['Fecha'], format = '%d/%m/%Y')
 df_dates = pd.read_excel('//NVO01WINAP0023A/Procesos Sense/Catalogos/Catalog Fecha.xlsx')
 df_dates = df_dates[['Fecha','Semana_Myn','Año-Sem Mayan','Año_Myn']]
 df_dates.rename(columns = {'Año-Sem Mayan':'Año_Semana'}, inplace = True)
+df_dates['Año_Semana'] = [str(year) + ' - ' + str(week) if int(week) >9 else\
+                          str(year) + ' - 0' + str(week) \
+                          for year,week in zip(df_dates['Año_Myn'],df_dates['Semana_Myn'])]
 
 print(df.shape)
 df = df.merge(df_dates, how = 'left', on = ['Fecha'])
