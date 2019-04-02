@@ -48,7 +48,7 @@ df = df[df['Año_Myn'] >= 2017]
 print(str(df.shape)+' >=2017\n\n')
 
 print(np.unique(df['SISTEMA On (f) Agrup Rentas']))
-print(np.unique(df['Sistema']))
+# print(np.unique(df['Sistema']))
 
 df = df.groupby(['PlazaBuena',
                  'Sistema',
@@ -56,5 +56,6 @@ df = df.groupby(['PlazaBuena',
 df = pd.DataFrame(df.to_records())
 df.rename(columns = {'ContractNumber':'Ventas'}, inplace = True)
 
+# df.to_csv('ventas.csv')
 def frame():
     return(df)

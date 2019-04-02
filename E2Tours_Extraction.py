@@ -50,5 +50,8 @@ df = df.groupby(['PlazaBuena',
 df = pd.DataFrame(df.to_records())
 df.rename(columns = {'Clave':'Tours'}, inplace = True)
 
+#### EXCEPTION 1 - 02 APRIL 2019: REMOVED 'PLAN DE DESCANSO'
+df = df[df['PlazaBuena'] != 'PLAN DE DESCANSO']
+# df.to_csv('tours.csv')
 def frame():
     return(df)
