@@ -9,6 +9,7 @@ df = offsite.frame().merge(tours.frame(), on = llave, how = 'outer')
 df = df[(df['Sistema'] == 'IN-HOUSE') | (df['Sistema'] == 'STREET')]
 
 df.to_excel('base.xlsx', index = False)
+#df.to_csv('base.csv', index = False)
 print(df.shape)
 print(df.head())
 

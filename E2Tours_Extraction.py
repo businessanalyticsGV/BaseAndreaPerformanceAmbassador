@@ -19,7 +19,8 @@ files = [f for f in os.listdir(path) if 'ToursRevenueNal' in f and date in f][0]
 print(files)
 
 ls_columns = ['Clave','EmpresaNombre','Fecha','SistemaVenta']
-df = pd.read_csv(path+files)[ls_columns]
+df = pd.read_csv(path+files)
+df = df[df['Locacion'] != 237][ls_columns]
 df['Fecha'] = pd.to_datetime(df['Fecha'], format = '%d/%m/%Y')
 
 ### FECHA
@@ -38,20 +39,19 @@ df_cat = pd.read_excel('catalogoPlaza.xlsx', sheet_name = 'Tours')
 df = df.merge(df_cat, how = 'left', on = ['EmpresaNombre'])
 print(str(df.shape)+' plaza')
 
-df = df[df['Año_Myn'] >= 2017]
-print(str(df.shape)+' >=2017\n\n')
+df = df[df['Año_Myn'] >= 2016]
+print(str(df.shape)+' >=2016\n\n')
 df.rename(columns = {'SistemaVenta':'Sistema'}, inplace = True)
 
-print(np.unique(df['Sistema']))
+## print(np.unique(df['Sistema']))
 
 df = df.groupby(['PlazaBuena',
                  'Sistema',
                  'Año_Semana'], as_index = True)[['Clave']].nunique()
 df = pd.DataFrame(df.to_records())
 df.rename(columns = {'Clave':'Tours'}, inplace = True)
-
 #### EXCEPTION 1 - 02 APRIL 2019: REMOVED 'PLAN DE DESCANSO'
 df = df[df['PlazaBuena'] != 'PLAN DE DESCANSO']
-# df.to_csv('tours.csv')
+
 def frame():
     return(df)
