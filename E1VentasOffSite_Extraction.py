@@ -12,28 +12,32 @@ print('\n\nVentas Offsite...\n\n')
 path = '//NVO01WINAP0023A/Procesos Sense/Respaldos Ventas Off Site/'
 
 
+
 yesterday = datetime.datetime.now()+td(days=-1)
 yesterday = datetime.datetime.strftime(yesterday,'%Y-%m-%d')
 
 df = pd.read_csv(path+'Ventas Off Site_'+yesterday+'.csv')
 
+## 0.- WHICH ONES ARE COB ACAPULCO?                             ## QUESTION 1
+print('Extracting COB 237')
+print('Before Removing: ',df.shape[0])
+yesterdayCOB = datetime.datetime.now()+td(days=-1)
+yesterdayCOB = datetime.datetime.strftime(yesterdayCOB,'%Y%m%d')
+
+path_cob_acapulco = '//NVO01WINAP0023A/Procesos SQL/Rentabilidad/files/'
+path_cob_acapulco = path_cob_acapulco+yesterdayCOB+' - ToursRevenueNal.csv'
+df_cob = pd.read_csv(path_cob_acapulco)[['Contrato','Locacion']]
+df_cob.rename(columns = {'Contrato':'ContractNumber'}, inplace = True)
+df_cob = df_cob[(df_cob['Locacion'] == 237) & (pd.notnull(df_cob['ContractNumber']))] #<:::: ANSWER 1
+print(len(np.unique(df_cob['ContractNumber'])),df_cob.shape[0])
+
+df = df.merge(df_cob, how = 'left', on = ['ContractNumber'])
+df = df[df['Locacion'] != 237]
+df = df.drop(columns = ['Locacion'])
+
+print('After Removing: ',df.shape[0])
 print(yesterday)
 
-#ls = os.listdir(path)
-#ls = [(f,f[-14:][:10]) for f in ls]
-#df = pd.DataFrame(ls,columns=['name','txtdate'])
-#df['date'] = [((d[:4]),(d[5:7]),(d[-2:])) for d in df['txtdate']]
-#df['true'] = ['S' in d[0] for d in df['date']]
-#df = df[df['true'] == False]
-#df['date'] = [datetime.datetime(int(d[0]),int(d[1]),int(d[2])) for d in df['date']]
-#df = df[df['date'] == max(df['date'])].iloc[0,0]
-
-
-
-
-
-
-#print(df.head())
 ## II.- LOADING FRAME AND MERGING WITH DATE CATALOGUE
 df_dates = pd.read_excel('//NVO01WINAP0023A/Procesos Sense/Catalogos/Catalog Fecha.xlsx')
 df_dates = df_dates[['Fecha','Semana_Myn','Año-Sem Mayan','Año_Myn']]
